@@ -1,0 +1,29 @@
+apiVersion: v1 
+kind: Service 
+metadata:
+  name: {{ include "guestbook.name" }}
+  labels:
+    {{ include  "guestbook.labels" . | nindent 4 }}
+spec:
+  replicas: {{ .Values.backend.replicaCount }}
+
+  selector:
+    matchLabels:
+      labels: 
+        {{ include "guestbook.selectorLabels" . | nindent 8 }}
+
+  template:
+    metadata:
+      labels:
+        {{ include "guestbook.selectorLabels" . | nindent 8 }}
+    spec:
+      containers:
+        - name: {{ include "guestbook.name" . | nindent 8 }}
+          image: {{ .Values.backend.repository }}
+          tag: {{ .Values.backend.tag }} 
+          resources:
+            {{- toYaml .Values.resources . | nindent 12 }}
+          ports:
+            - port: {{ .Values.backend.servide.port }} 
+          args:
+            {{- toYaml .Values.args . | nindent 12 }}  

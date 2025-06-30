@@ -14,7 +14,7 @@ spec:
       labels: {{ include "guestbook.selectorLabels" . | nindent 6 }}
     spec:
       containers:
-        - name: {{ include "guestbook.name" . | nindent 4 }}
+        - name: {{ include "guestbook.name" . | nindent 8 }}
           ports: {{ .Values.frontend.service.port }}
           resources:
             {{- toYaml frontend.resources . | nindent 12 }}
